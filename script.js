@@ -47,13 +47,18 @@ function game() {
 
     for (let i = 0; i < 5; i++){
         //プレイヤーの手を取得
-        let playerSelection = prompt("Please input your next move") ?? "Invalid text";
-        
-        // 正しくない文字、もしくはundefined, nullの場合何度も問い直す
-        while(!hands.includes(playerSelection.toLowerCase())) {
-            playerSelection = prompt("Invalid input: Try again") ?? "Invalid text";
+        let playerSelection = prompt("Please input your next move");
+        if (playerSelection == null) {
+            return;
         }
+        // 正しくない文字、もしくはundefinedの場合は何度も問い直す
+        while(!hands.includes(playerSelection.toLowerCase())) {
+            playerSelection = prompt("Invalid input: Try again");
 
+            if (playerSelection == null) {
+                return;
+            }
+        }
         //その試合の結果を取得し、表示
         let result = playRound
         (playerSelection, computerPlay());
