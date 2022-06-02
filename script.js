@@ -48,13 +48,14 @@ function game() {
     for (let i = 0; i < 5; i++){
         //プレイヤーの手を取得
         let playerSelection = prompt("Please input your next move");
+        // キャンセルされたら終了
         if (playerSelection == null) {
             return;
         }
         // 正しくない文字、もしくはundefinedの場合は何度も問い直す
         while(!hands.includes(playerSelection.toLowerCase())) {
             playerSelection = prompt("Invalid input: Try again");
-
+            // キャンセルされたら終了
             if (playerSelection == null) {
                 return;
             }
