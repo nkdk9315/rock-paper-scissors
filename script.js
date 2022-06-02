@@ -1,11 +1,12 @@
-//コンピュータの手を選ぶ
+//　じゃんけんの手の入った配列を作る
+const hands = ["rock", "paper", "scissors"];
 
+//コンピュータの手を選ぶ
 function computerPlay() {
     //０から２までのランダムな数を作る
     let num = Math.floor(Math.random()*3);
-    //じゃんけんの手の入った配列を作る
-    const hands = ["rock", "paper", "scissors"];
-    //配列から指定された位置の手を返す
+
+    //じゃんけんの配列から指定された位置の手を返す
     return hands[num];
 }
 
@@ -46,23 +47,27 @@ function game() {
 
     for (let i = 0; i < 5; i++){
         //プレイヤーの手を取得
-        let playerSelection = prompt("Please input your next move");
-        // 正しくない場合何度も問い直す
+        let playerSelection = prompt("Please input your next move") ?? "Invalid text";
+        
+        // 正しくない文字、もしくはundefined, nullの場合何度も問い直す
+        while(!hands.includes(playerSelection.toLowerCase())) {
+            playerSelection = prompt("Invalid input: Try again") ?? "Invalid text";
+        }
 
-        //その試合のメッセージを取得し、表示
+        //その試合の結果を取得し、表示
         let result = playRound
         (playerSelection, computerPlay());
         
         console.log(result);
 
-        //　メッセージの中にwinの単語があれば勝利とみなし、プレイヤーの勝利数に加算し、loseの文字があればコンピュータ側に加算
+        //　結果メッセージの中にwinの単語があれば勝利とみなし、プレイヤーの勝利数に加算し、loseの文字があればコンピュータ側に加算
         if (result.includes("win")) {
             playerWin += 1;
         } else if (result.includes("lose")) {
             computerWin += 1;
         }
     }
-    // 勝ち数の表示
+    // 勝ち数を表示する関数
     function printTotalScore () {
         console.log(`YOU: ${playerWin} COM: ${computerWin} DRAW: ${5 - computerWin - playerWin}`);
     }
