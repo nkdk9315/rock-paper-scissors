@@ -41,11 +41,17 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function game() {
+    // 試合数
+    const match = 5;
     //プレイヤーとコンピュータの勝利数を初期化
     let computerWin = 0;
     let playerWin = 0;
 
-    for (let i = 0; i < 5; i++){
+    // 結果のdivを入れるコンテナを取得
+    const container = document.querySelector(".container");
+
+    // ゲームを任意の回数行う
+    for (let i = 0; i < match; i++){
         //プレイヤーの手を取得
         let playerSelection = prompt("Please input your next move");
         // キャンセルされたら終了
@@ -60,11 +66,14 @@ function game() {
                 return;
             }
         }
-        //その試合の結果を取得し、表示
+        //その試合の結果を取得
         let result = playRound
         (playerSelection, computerPlay());
-        
-        console.log(result);
+
+    　　//divを作り、結果を入れて表示
+        const div = document.createElement("div");
+        div.textContent = `Round${i + 1}: ` + result;
+        container.appendChild(div);
 
         //　結果メッセージの中にwinの単語があれば勝利とみなし、プレイヤーの勝利数に加算し、loseの文字があればコンピュータ側に加算
         if (result.includes("win")) {
@@ -73,21 +82,29 @@ function game() {
             computerWin += 1;
         }
     }
-    // 勝ち数を表示する関数
-    function printTotalScore () {
-        console.log(`YOU: ${playerWin} COM: ${computerWin} DRAW: ${5 - computerWin - playerWin}`);
+    
+    // 総合結果を表示する関数
+    function printTotalScore (resultText) {
+        const h4 = document.createElement("h4");
+        const h3 = document.createElement("h3");
+        // 受け取った、勝敗メッセージを表示
+        h3.textContent = resultText;
+        container.appendChild(h3);
+
+        //最終的な勝ち負け数を表示
+        h4.textContent = `YOU: ${playerWin} COM: ${computerWin} DRAW: ${match - computerWin - playerWin}`;
+        container.appendChild(h4);
     }
-    // 勝敗を表示
+
+    // 勝ち数に応じて、結果を表示
     if (playerWin > computerWin) {
-            console.log("YOU WIN!");
-            printTotalScore();
+           printTotalScore("YOU WIN!");
         } else if (playerWin == computerWin) {
-            console.log("DRAW");
-            printTotalScore();
+           printTotalScore("DRAW");
         } else {
-            console.log("YOU LOSE...");
-            printTotalScore();
+            printTotalScore("YOU LOSE...");
         }
 }
-
-game();
+// ボタンをおすとゲームが開始
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button => button.addEventListener("click", game));
